@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>174960454604-bd0rtdo8529gao61setltggbk7hc1771.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.174960454604-bd0rtdo8529gao61setltggbk7hc1771</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCrjetsX-dHx8q6k9Mu7moh6722rk5boqo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>174960454604</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.cobitDssApp</string>
+	<key>PROJECT_ID</key>
+	<string>cobit-dss-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cobit-dss-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:174960454604:ios:2a78e8a87a6fc9b6538b69</string>
+</dict>
+</plist>
