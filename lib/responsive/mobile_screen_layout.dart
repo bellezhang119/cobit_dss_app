@@ -5,8 +5,8 @@ class MobileScreenLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('This is mobile')),
+    return const Scaffold(
+      body: Center(child: Text('Hello world this is mobile')),
     );
   }
 }
