@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_common/src/common/color.dart' as charts_color;
 
 class BarChartSample extends StatefulWidget {
-  final List<double> quarter1Data;
-  final List<double> quarter2Data;
-  final List<double> quarter3Data;
-  final List<double> quarter4Data;
+  final List<int> quarter1Data;
+  final List<int> quarter2Data;
+  final List<int> quarter3Data;
+  final List<int> quarter4Data;
+  final Function(List<int>)? updateQuarter1Data;
+  final Function(List<int>)? updateQuarter2Data;
+  final Function(List<int>)? updateQuarter3Data;
+  final Function(List<int>)? updateQuarter4Data;
 
   BarChartSample({
     Key? key,
@@ -14,6 +19,10 @@ class BarChartSample extends StatefulWidget {
     required this.quarter2Data,
     required this.quarter3Data,
     required this.quarter4Data,
+    this.updateQuarter1Data,
+    this.updateQuarter2Data,
+    this.updateQuarter3Data,
+    this.updateQuarter4Data,
   }) : super(key: key);
 
   @override
@@ -21,10 +30,10 @@ class BarChartSample extends StatefulWidget {
 }
 
 class _BarChartSampleState extends State<BarChartSample> {
-  List<double> get quarter1Data => widget.quarter1Data;
-  List<double> get quarter2Data => widget.quarter2Data;
-  List<double> get quarter3Data => widget.quarter3Data;
-  List<double> get quarter4Data => widget.quarter4Data;
+  List<int> get quarter1Data => widget.quarter1Data;
+  List<int> get quarter2Data => widget.quarter2Data;
+  List<int> get quarter3Data => widget.quarter3Data;
+  List<int> get quarter4Data => widget.quarter4Data;
 
   late List<charts.Series> seriesList;
 
@@ -98,23 +107,74 @@ class _BarChartSampleState extends State<BarChartSample> {
     return charts.BarChart(
       _createData(),
       vertical: true,
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          labelStyle: charts.TextStyleSpec(fontSize: 12),
+          lineStyle: charts.LineStyleSpec(
+            color: charts.ColorUtil.fromDartColor(Colors.transparent),
+          ),
+        ),
+        showAxisLine: false,
+        tickProviderSpec: charts.BasicNumericTickProviderSpec(
+          desiredTickCount: 10,
+        ),
+        // Set the maximum value of the y-axis to 270
+        viewport: charts.NumericExtents(0, 270),
+      ),
+      behaviors: [],
+    );
+  }
+
+  // Helper function to create a single legend item
+  Widget legendItem(String text, Color color) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            color: color,
+          ),
+          SizedBox(width: 4),
+          Text(text),
+        ],
+      ),
+    );
+  }
+
+  Widget customLegend() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        legendItem('Q1', Colors.yellow as Color),
+        legendItem('Q2', Colors.orange as Color),
+        legendItem('Q3', Colors.lightBlue as Color),
+        legendItem('Q4', Colors.grey as Color),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: barChart(),
-        ));
+      appBar: AppBar(),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            customLegend(),
+            Expanded(child: barChart()),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class Domains {
   final String domain;
-  final double score;
+  final int score;
 
   Domains(this.domain, this.score);
 }
