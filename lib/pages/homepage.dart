@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: [
           _buildGraphTab(),
           TableTab(audits: audits, onAuditUpdated: onAuditUpdated),
-          const Center(child: Text('Save')),
+          _buildSaveLoadTab(),
         ],
       ),
     );
@@ -181,6 +181,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildSaveLoadTab() {
+    return Column(
+      children: [
+        TabBar(
+            controller: _graphTabController,
+            labelColor: Colors.black,
+            tabs: const [Tab(text: 'Save'), Tab(text: 'Load')])
       ],
     );
   }
