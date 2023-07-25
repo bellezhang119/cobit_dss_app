@@ -148,7 +148,7 @@ class _BarChartSampleState extends State<BarChartSample> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         legendItem('Q1', Colors.yellow as Color),
-        legendItem('Q2', Colors.orange as Color),
+        legendItem('Q2', Colors.deepOrange as Color),
         legendItem('Q3', Colors.lightBlue as Color),
         legendItem('Q4', Colors.grey as Color),
       ],
