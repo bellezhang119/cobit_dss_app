@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../datas/table_data.dart';
 
 class TableTab extends StatefulWidget {
@@ -34,11 +35,13 @@ class _TableTabState extends State<TableTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: DataTable(
-      columns: _buildColumns(),
-      rows: _buildRows(),
-    ));
+    return Scaffold(
+        body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child:
+                    DataTable(columns: _buildColumns(), rows: _buildRows()))));
   }
 
   List<DataColumn> _buildColumns() {
