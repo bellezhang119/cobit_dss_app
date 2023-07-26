@@ -3,6 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import '../tabs/barchart_tab.dart';
 import '../tabs/table_tab.dart';
 import '../datas/table_data.dart';
+import '../tabs/load_tab.dart';
+import '../tabs/save_tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -191,7 +193,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         TabBar(
             controller: _graphTabController,
             labelColor: Colors.black,
-            tabs: const [Tab(text: 'Save'), Tab(text: 'Load')])
+            tabs: const [Tab(text: 'Save'), Tab(text: 'Load')]),
+        Expanded(
+          child: TabBarView(controller: _graphTabController, children: [
+            SaveTab(quarter1Data: quarter1Data),
+            LoadTab(
+                updateQuarter1Data: updateQuarter1Data,
+                updateQuarter2Data: updateQuarter2Data,
+                updateQuarter3Data: updateQuarter3Data,
+                updateQuarter4Data: updateQuarter4Data)
+          ]),
+        )
       ],
     );
   }

@@ -19,10 +19,10 @@ class BarChartSample extends StatefulWidget {
     required this.quarter2Data,
     required this.quarter3Data,
     required this.quarter4Data,
-    this.updateQuarter1Data,
-    this.updateQuarter2Data,
-    this.updateQuarter3Data,
-    this.updateQuarter4Data,
+    required this.updateQuarter1Data,
+    required this.updateQuarter2Data,
+    required this.updateQuarter3Data,
+    required this.updateQuarter4Data,
   }) : super(key: key);
 
   @override
