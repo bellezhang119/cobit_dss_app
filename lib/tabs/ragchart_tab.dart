@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'dart:math'; // Import the dart:math library for the min function
+import 'dart:math';
 import '../datas/table_data.dart';
 
 
 class RAGChartTab extends StatelessWidget {
+  final List<int> domainScores;
+
+  RAGChartTab({required this.domainScores});
+
   @override
   Widget build(BuildContext context) {
     return _buildTable();
@@ -11,7 +15,6 @@ class RAGChartTab extends StatelessWidget {
 
   Widget _buildTable() {
     List<String> domains = TableData.domains;
-    List<int> domainScores = TableData.calculateDomainScores([1, 1, 1, 1, 1]); // Replace [1, 1, 1, 1, 1] with your actual audit data
 
     // Ensure both lists have the same length
     int rowCount = min(domains.length, domainScores.length);
