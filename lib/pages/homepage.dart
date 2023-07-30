@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../tabs/barchart_tab.dart';
+import '../tabs/ragchart_tab.dart';
 import '../tabs/table_tab.dart';
 import '../datas/table_data.dart';
 import '../tabs/load_tab.dart';
@@ -169,17 +170,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   updateQuarter2Data: updateQuarter2Data,
                   updateQuarter3Data: updateQuarter3Data,
                   updateQuarter4Data: updateQuarter4Data),
-              Center(
-                  child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      updateQuarter1Data([100, 10, 100, 10, 100]);
-                    },
-                    child: Text('Set Quarter 1 Data'),
-                  )
-                ],
-              )),
+              RAGChartTab(), // New RAG Chart Tab with a simple table
             ],
           ),
         ),
