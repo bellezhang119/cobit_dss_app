@@ -122,6 +122,15 @@ class _BarChartSampleState extends State<BarChartSample> {
         viewport: charts.NumericExtents(0, 270),
       ),
       behaviors: [],
+      domainAxis: charts.OrdinalAxisSpec(
+          renderSpec: charts.SmallTickRendererSpec(
+            labelStyle: charts.TextStyleSpec(
+              fontSize: 8, 
+              
+            ),
+            labelRotation: 45
+          ),
+        ),
     );
   }
 
