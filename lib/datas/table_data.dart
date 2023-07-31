@@ -85,6 +85,8 @@ class TableData {
     'Managed assurance',
   ];
 
+  static final List<String> _domainCodes = _weights.keys.toList();
+
   static final List<String> _domains = [
     'Evaluate, Direct and Monitor',
     '',
@@ -131,6 +133,7 @@ class TableData {
   static Map<String, int> get weights => Map.unmodifiable(_weights);
   static List<String> get objectives => List.unmodifiable(_objectives);
   static List<String> get domains => List.unmodifiable(_domains);
+  static List<String> get domainCodes => List.unmodifiable(_domainCodes);
 
   static List<int> calculateScores(List<int> audits) {
     List<int> scores = List<int>.filled(40, 0);

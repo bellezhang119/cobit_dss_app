@@ -88,7 +88,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void onAuditUpdated(Map<String, int> updatedAudit) {
-    print('Audit updated');
     setState(() {
       audits = updatedAudit;
     });
@@ -170,7 +169,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   updateQuarter2Data: updateQuarter2Data,
                   updateQuarter3Data: updateQuarter3Data,
                   updateQuarter4Data: updateQuarter4Data),
-              RAGChartTab(domainScores: quarter4Data), // New RAG Chart Tab with a simple table
+              RAGChartTab(
+                  domainScores:
+                      quarter4Data), // New RAG Chart Tab with a simple table
             ],
           ),
         ),
@@ -189,10 +190,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: TabBarView(controller: _graphTabController, children: [
             SaveTab(quarter1Data: quarter1Data),
             LoadTab(
-                updateQuarter1Data: updateQuarter1Data,
-                updateQuarter2Data: updateQuarter2Data,
-                updateQuarter3Data: updateQuarter3Data,
-                updateQuarter4Data: updateQuarter4Data)
+              updateQuarter1Data: updateQuarter1Data,
+              updateQuarter2Data: updateQuarter2Data,
+              updateQuarter3Data: updateQuarter3Data,
+              updateQuarter4Data: updateQuarter4Data,
+              onAuditUpdated: onAuditUpdated,
+            )
           ]),
         )
       ],
