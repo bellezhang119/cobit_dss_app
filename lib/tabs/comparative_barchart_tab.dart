@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:charts_common/src/common/color.dart' as charts_color;
 
-class BarChartSample extends StatefulWidget {
+class ComparativeBarChart extends StatefulWidget {
   final List<int> quarter1Data;
   final List<int> quarter2Data;
   final List<int> quarter3Data;
@@ -13,7 +13,7 @@ class BarChartSample extends StatefulWidget {
   final Function(List<int>)? updateQuarter3Data;
   final Function(List<int>)? updateQuarter4Data;
 
-  BarChartSample({
+  ComparativeBarChart({
     Key? key,
     required this.quarter1Data,
     required this.quarter2Data,
@@ -26,10 +26,10 @@ class BarChartSample extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BarChartSampleState createState() => _BarChartSampleState();
+  _ComparativeBarChartState createState() => _ComparativeBarChartState();
 }
 
-class _BarChartSampleState extends State<BarChartSample> {
+class _ComparativeBarChartState extends State<ComparativeBarChart> {
   List<int> get quarter1Data => widget.quarter1Data;
   List<int> get quarter2Data => widget.quarter2Data;
   List<int> get quarter3Data => widget.quarter3Data;
@@ -41,16 +41,16 @@ class _BarChartSampleState extends State<BarChartSample> {
   @override
   void initState() {
     data = [
-      Domains('Evaluate, Direct and Monitor', widget.quarter1Data[0],
-          quarter2Data[0], quarter3Data[0], quarter4Data[0]),
-      Domains('Align, Plan and Organise', widget.quarter1Data[1],
-          quarter2Data[1], quarter3Data[1], quarter4Data[1]),
-      Domains('Build, Acquire and Implement', widget.quarter1Data[2],
-          quarter2Data[2], quarter3Data[2], quarter4Data[2]),
-      Domains('Deliver, Service and Support', widget.quarter1Data[3],
-          quarter2Data[3], quarter3Data[3], quarter4Data[3]),
-      Domains('Monitor, Evaluate and Assess', widget.quarter1Data[4],
-          quarter2Data[4], quarter3Data[4], quarter4Data[4]),
+      Domains('Evaluate', widget.quarter1Data[0], quarter2Data[0],
+          quarter3Data[0], quarter4Data[0]),
+      Domains('Align', widget.quarter1Data[1], quarter2Data[1], quarter3Data[1],
+          quarter4Data[1]),
+      Domains('Build', widget.quarter1Data[2], quarter2Data[2], quarter3Data[2],
+          quarter4Data[2]),
+      Domains('Deliver', widget.quarter1Data[3], quarter2Data[3],
+          quarter3Data[3], quarter4Data[3]),
+      Domains('Monitor', widget.quarter1Data[4], quarter2Data[4],
+          quarter3Data[4], quarter4Data[4]),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
