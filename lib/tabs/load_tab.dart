@@ -23,23 +23,7 @@ class LoadTab extends StatefulWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Put the button's functionality here, such as navigating or opening a dialog
-          },
-          child: Text('Load table'),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                const Color.fromARGB(
-                    255, 0, 0, 0)), // The background color of the button
-            foregroundColor: MaterialStateProperty.all<Color>(
-                Color.fromARGB(255, 0, 0, 0)), // The text color of the button
-          ),
-        ),
-      ),
-    );
+    return Scaffold();
   }
 }
 
@@ -60,34 +44,36 @@ class _LoadTabState extends State<LoadTab>
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('audits').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
+        child: Form(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('audits').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error fetching audit data'),
+                );
+              }
+
+              final documents = snapshot.data?.docs ?? [];
+              final documentIds = documents.map((doc) => doc.id).toList();
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildDropDown('Q1:', q1Value, documentIds),
+                  buildDropDown('Q2:', q2Value, documentIds),
+                  buildDropDown('Q3:', q3Value, documentIds),
+                  buildDropDown('Q4:', q4Value, documentIds),
+                ],
               );
-            }
-
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error fetching audit data'),
-              );
-            }
-
-            final documents = snapshot.data?.docs ?? [];
-            final documentIds = documents.map((doc) => doc.id).toList();
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildDropDown('Q1:', q1Value, documentIds),
-                buildDropDown('Q2:', q2Value, documentIds),
-                buildDropDown('Q3:', q3Value, documentIds),
-                buildDropDown('Q4:', q4Value, documentIds),
-              ],
-            );
-          },
+            },
+          ),
         ),
       ),
     );
@@ -103,7 +89,7 @@ class _LoadTabState extends State<LoadTab>
         Text(label),
         SizedBox(width: 10),
         Expanded(
-          child: DropdownButton<String>(
+          child: DropdownButtonFormField<String>(
             value: selectedValue,
             onChanged: (newValue) {
               setState(() {
