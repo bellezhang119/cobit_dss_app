@@ -70,6 +70,19 @@ class _LoadTabState extends State<LoadTab>
                   buildDropDown('Q2:', q2Value, documentIds),
                   buildDropDown('Q3:', q3Value, documentIds),
                   buildDropDown('Q4:', q4Value, documentIds),
+                  SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      // TODO: Navigate to the Bar Chart
+                    },
+                    child: Text(
+                      'Back to Bar Chart',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: const Color.fromARGB(255, 99, 104, 108),
+                      ),
+                    ),
+                  ),
                 ],
               );
             },
@@ -114,8 +127,7 @@ class _LoadTabState extends State<LoadTab>
                 return PopupMenuItem<String>(
                   value: value,
                   child: Container(
-                    width:
-                        MediaQuery.of(context).size.width - 80, // 根据您的Row布局进行调整
+                    width: MediaQuery.of(context).size.width - 80,
                     child: Text(value),
                   ),
                 );
