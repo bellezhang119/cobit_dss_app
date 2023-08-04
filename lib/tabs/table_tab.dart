@@ -41,7 +41,13 @@ class _TableTabState extends State<TableTab> {
             child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child:
-                    DataTable(columns: _buildColumns(), rows: _buildRows()))));
+                    DataTable(
+                      columnSpacing: 10.0,
+                      // dataRowHeight: 40.0,
+                      // headingRowHeight: 50.0,
+                      horizontalMargin: 20.0,
+                      dataRowHeight: 80,
+                      columns: _buildColumns(), rows: _buildRows()))));
   }
 
   List<DataColumn> _buildColumns() {
@@ -77,10 +83,24 @@ class _TableTabState extends State<TableTab> {
 
       rows.add(
         DataRow(cells: <DataCell>[
-          DataCell(Text(domains[i])),
+          DataCell(
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: 130
+              ),
+              child: Text(domains[i]),
+            )
+          ),
           DataCell(Text(weightsValue[i].toString())),
           DataCell(Text(codes[i])),
-          DataCell(Text(objectives[i])),
+          DataCell(
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: 150
+              ),
+              child: Text(objectives[i]),
+            )
+          ),
           DataCell(
             DropdownButtonFormField<int>(
               value: auditValues[i],
