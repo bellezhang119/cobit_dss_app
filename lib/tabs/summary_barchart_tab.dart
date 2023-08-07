@@ -81,27 +81,27 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
               tooltipBehavior: _tooltip,
               series: <ChartSeries<Quarter, String>>[
             ColumnSeries<Quarter, String>(
-                onPointTap: (ChartPointDetails details) {
-                  print(details.pointIndex);
-                  switch (details.pointIndex) {
-                    case 0:
-                      navigateToIndividualBarChart("Q1", quarter1Data);
-                      break;
-                    case 1:
-                      navigateToIndividualBarChart("Q2", quarter2Data);
-                      break;
-                    case 2:
-                      navigateToIndividualBarChart("Q3", quarter3Data);
-                      break;
-                    case 3:
-                      navigateToIndividualBarChart("Q4", quarter4Data);
-                      break;
-                  }
-                },
-                dataSource: data,
-                xValueMapper: (Quarter data, _) => data.quarter,
-                yValueMapper: (Quarter data, _) => data.score,
-                color: Colors.black)
+              onPointTap: (ChartPointDetails details) {
+                print(details.pointIndex);
+                switch (details.pointIndex) {
+                  case 0:
+                    navigateToIndividualBarChart("Q1", quarter1Data);
+                    break;
+                  case 1:
+                    navigateToIndividualBarChart("Q2", quarter2Data);
+                    break;
+                  case 2:
+                    navigateToIndividualBarChart("Q3", quarter3Data);
+                    break;
+                  case 3:
+                    navigateToIndividualBarChart("Q4", quarter4Data);
+                    break;
+                }
+              },
+              dataSource: data,
+              xValueMapper: (Quarter data, _) => data.quarter,
+              yValueMapper: (Quarter data, _) => data.score,
+            )
           ]))
     ]))));
   }

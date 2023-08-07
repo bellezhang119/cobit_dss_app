@@ -69,10 +69,10 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
                   tooltipBehavior: _tooltip,
                   series: <ChartSeries<Domain, String>>[
                 ColumnSeries<Domain, String>(
-                    dataSource: data,
-                    xValueMapper: (Domain data, _) => data.domain,
-                    yValueMapper: (Domain data, _) => data.score,
-                    color: Colors.black)
+                  dataSource: data,
+                  xValueMapper: (Domain data, _) => data.domain,
+                  yValueMapper: (Domain data, _) => data.score,
+                )
               ]))
         ]))));
   }

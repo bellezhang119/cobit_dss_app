@@ -184,7 +184,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   updateQuarter3Data: updateQuarter3Data,
                   updateQuarter4Data: updateQuarter4Data),
               RAGChartTab(
-                  domainScores: quarter4Data,
+                quarter1Data: quarter1Data,
+                quarter2Data: quarter2Data,
+                quarter3Data: quarter3Data,
+                quarter4Data: quarter4Data,
               ),
             ],
           ),

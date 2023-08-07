@@ -1,76 +1,178 @@
-// ragchart_tab.dart
-
 import 'package:flutter/material.dart';
 import 'dart:math';
 import '../datas/table_data.dart';
 
-class RAGChartTab extends StatelessWidget {
-  final List<int> domainScores;
-  final List<String> domainNames = [
-    'Evaluate, Direct and Monitor',
-    'Align, Plan and Organise',
-    'Build, Acquire and Implement',
-    'Deliver, Service and Support',
-    'Monitor, Evaluate and Assess',
+class RAGChartTab extends StatefulWidget {
+  final List<int> quarter1Data;
+  final List<int> quarter2Data;
+  final List<int> quarter3Data;
+  final List<int> quarter4Data;
+
+  RAGChartTab(
+      {Key? key,
+      required this.quarter1Data,
+      required this.quarter2Data,
+      required this.quarter3Data,
+      required this.quarter4Data})
+      : super(key: key);
+
+  @override
+  _RAGChartTab createState() => _RAGChartTab();
+}
+
+class _RAGChartTab extends State<RAGChartTab> {
+  List<int> get quarter1Data => widget.quarter1Data;
+  List<int> get quarter2Data => widget.quarter2Data;
+  List<int> get quarter3Data => widget.quarter3Data;
+  List<int> get quarter4Data => widget.quarter4Data;
+  List<int> maxDomainScores = TableData.calculateMaxDomainScores();
+
+  List<String> domainNames = [
+    'Evaluate',
+    'Align',
+    'Build',
+    'Deliver',
+    'Monitor',
   ];
 
-  final List<int> domainWeights = [150, 266, 144, 92, 40];
+  List<TableRow> buildRows() {
+    List<TableRow> rows = [];
 
-  RAGChartTab({required this.domainScores});
+    // Build the header row
+    rows.add(
+      TableRow(
+        children: [
+          Center(child: Text('Domain')),
+          Center(child: Text('Quarter')),
+          Center(child: Text('Score')),
+          Text(''),
+        ],
+      ),
+    );
+
+    // Build the data rows dynamically using a for loop
+    for (int i = 0; i < domainNames.length; i++) {
+      rows.add(
+        TableRow(
+          children: [
+            Center(child: Text(domainNames[i])),
+            TableCell(
+              child: Table(
+                border: TableBorder.all(),
+                children: [
+                  TableRow(
+                    children: [Center(child: Text('Q1'))],
+                  ),
+                  TableRow(
+                    children: [Center(child: Text('Q2'))],
+                  ),
+                  TableRow(
+                    children: [Center(child: Text('Q3'))],
+                  ),
+                  TableRow(
+                    children: [Center(child: Text('Q4'))],
+                  ),
+                ],
+              ),
+            ),
+            TableCell(
+              child: Table(
+                border: TableBorder.all(),
+                children: [
+                  TableRow(
+                    children: [
+                      Center(child: Text(widget.quarter1Data[i].toString())),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Center(child: Text(widget.quarter2Data[i].toString())),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Center(child: Text(widget.quarter3Data[i].toString())),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Center(child: Text(widget.quarter4Data[i].toString())),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            TableCell(
+              child: Table(
+                border: TableBorder.all(),
+                children: [
+                  TableRow(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: getTableCellColor(
+                            widget.quarter1Data[i], maxDomainScores[i]),
+                        child: Text(''),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: getTableCellColor(
+                            widget.quarter2Data[i], maxDomainScores[i]),
+                        child: Text(''),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: getTableCellColor(
+                            widget.quarter3Data[i], maxDomainScores[i]),
+                        child: Text(''),
+                      ),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: getTableCellColor(
+                            widget.quarter4Data[i], maxDomainScores[i]),
+                        child: Text(''),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return rows;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildTable();
-  }
-
-  Widget _buildTable() {
-    int rowCount = min(domainNames.length, domainScores.length);
-
-    List<TableRow> rows = [];
-    rows.add(_buildTableRow(['Domain', 'Score Quarter 4', 'Red (0 - 50%), Amber (50-80%), Green (80-100%)'])); // Header row
-    for (int i = 0; i < rowCount; i++) {
-      int totalWeight = domainWeights[i];
-      double totalWeightValue = totalWeight.toDouble();
-      double percentage = totalWeightValue != 0 ? (domainScores[i] / totalWeightValue) * 100 : 0;
-      Color? backgroundColor = _getScoreBoxColor(percentage);
-      rows.add(_buildTableRow([
-        domainNames[i],
-        '${domainScores[i]} / $totalWeight (${percentage.toStringAsFixed(0)}%)',
-        backgroundColor,
-      ]));
-    }
-
-    return Table(
-      border: TableBorder.all(),
-      children: rows,
-    );
-  }
-
-  TableRow _buildTableRow(List<dynamic> rowData) {
-    return TableRow(
-      children: rowData.map((cellData) => _buildTableCell(cellData)).toList(),
-    );
-  }
-
-  Widget _buildTableCell(dynamic data) {
-    return TableCell(
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        color: data is Color ? data : null, // Set the background color for the score box cell
-        child: data is Color ? SizedBox.shrink() : Text( // Use SizedBox.shrink() for empty cell
-          data.toString(),
-          style: TextStyle(
-            color: data is Color ? _getTextColorForScoreBox(data) : null, // Set the text color for the score box cell
-          ),
-        ),
+    return Scaffold(
+      body: Table(
+        border: TableBorder.all(),
+        children: buildRows(),
       ),
     );
   }
 
-  Color _getScoreBoxColor(double percentage) {
-    if (percentage >= 80) {
+  Color getTableCellColor(int score, int maxScore) {
+    double percentage = (score / maxScore);
+
+    if (percentage >= 0.75) {
       return Colors.green;
-    } else if (percentage >= 50) {
+    } else if (percentage >= 0.50) {
       return Colors.amber;
     } else {
       return Colors.red;
