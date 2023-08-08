@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:charts_common/src/common/color.dart' as charts_color;
+import '../datas/table_data.dart';
 
 class IndividualBarChart extends StatefulWidget {
   final String quarter;
   final List<int> quarterData;
+  final TabController tabController;
 
   IndividualBarChart(
-      {Key? key, required this.quarter, required this.quarterData})
+      {Key? key,
+      required this.quarter,
+      required this.quarterData,
+      required this.tabController})
       : super(key: key);
 
   @override
@@ -18,41 +23,26 @@ class IndividualBarChart extends StatefulWidget {
 class _IndividualBarChartState extends State<IndividualBarChart> {
   List<int> get quarterData => widget.quarterData;
   List<int> get quarter => widget.quarterData;
+  TabController get tabController => widget.tabController;
 
   late String quarterName;
   late List<Domain> data;
   late TooltipBehavior _tooltip;
 
+  List<int> maxScore = TableData.calculateMaxDomainScores();
+
   @override
   void initState() {
     quarterName = widget.quarter;
     data = [
-      Domain("Evaluate", quarterData[0]),
-      Domain("Align", quarterData[1]),
-      Domain("Build", quarterData[2]),
-      Domain("Deliver", quarterData[3]),
-      Domain("Monitor", quarterData[4])
+      Domain("Evaluate", calculatePercentage(quarterData[0], maxScore[0])),
+      Domain("Align", calculatePercentage(quarterData[1], maxScore[1])),
+      Domain("Build", calculatePercentage(quarterData[2], maxScore[2])),
+      Domain("Deliver", calculatePercentage(quarterData[3], maxScore[3])),
+      Domain("Monitor", calculatePercentage(quarterData[4], maxScore[4]))
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
-  }
-
-  // Helper function to create a single legend item
-  Widget legendItem(String text, Color color) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Container(
-            width: 12,
-            height: 12,
-            color: color,
-          ),
-          SizedBox(width: 4),
-          Text(text),
-        ],
-      ),
-    );
   }
 
   @override
@@ -63,32 +53,33 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
             child: Container(
                 child: Column(children: [
           Expanded(
-              child: SfCartesianChart(
-                  title: ChartTitle(text: quarterName),
-                  primaryXAxis: CategoryAxis(),
-                  tooltipBehavior: _tooltip,
-                  series: <ChartSeries<Domain, String>>[
-                ColumnSeries<Domain, String>(
-                  dataSource: data,
-                  xValueMapper: (Domain data, _) => data.domain,
-                  yValueMapper: (Domain data, _) => data.score,
-                )
-              ]))
+            child: SfCartesianChart(
+                title: ChartTitle(text: quarterName),
+                primaryXAxis: CategoryAxis(),
+                primaryYAxis: NumericAxis(maximum: 100),
+                tooltipBehavior: _tooltip,
+                series: <ChartSeries<Domain, String>>[
+                  ColumnSeries<Domain, String>(
+                    dataSource: data,
+                    xValueMapper: (Domain data, _) => data.domain,
+                    yValueMapper: (Domain data, _) => data.score,
+                  )
+                ]),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                tabController.animateTo(1);
+                Navigator.of(context).pop();
+              },
+              child: Text('Navigate to Comparative chart'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ))
         ]))));
   }
 
-  int calculateAverage(List<int> numbers) {
-    int sum = 0;
-    int count = numbers.length;
-
-    // Calculate the sum of all numbers in the list
-    for (int number in numbers) {
-      sum += number;
-    }
-
-    // Calculate the average and round it to the nearest integer
-    int average = (sum / count).round();
-    return average;
+  int calculatePercentage(int score, int maxScore) {
+    return ((score / maxScore) * 100).round();
   }
 }
 

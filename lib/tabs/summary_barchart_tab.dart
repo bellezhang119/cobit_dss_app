@@ -2,7 +2,7 @@ import 'package:cobit_dss_app/tabs/individual_barchart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:charts_common/src/common/color.dart' as charts_color;
+import '../datas/table_data.dart';
 
 class SummaryBarChart extends StatefulWidget {
   final List<int> quarter1Data;
@@ -13,18 +13,20 @@ class SummaryBarChart extends StatefulWidget {
   final Function(List<int>)? updateQuarter2Data;
   final Function(List<int>)? updateQuarter3Data;
   final Function(List<int>)? updateQuarter4Data;
+  final TabController tabController;
 
-  SummaryBarChart({
-    Key? key,
-    required this.quarter1Data,
-    required this.quarter2Data,
-    required this.quarter3Data,
-    required this.quarter4Data,
-    required this.updateQuarter1Data,
-    required this.updateQuarter2Data,
-    required this.updateQuarter3Data,
-    required this.updateQuarter4Data,
-  }) : super(key: key);
+  SummaryBarChart(
+      {Key? key,
+      required this.quarter1Data,
+      required this.quarter2Data,
+      required this.quarter3Data,
+      required this.quarter4Data,
+      required this.updateQuarter1Data,
+      required this.updateQuarter2Data,
+      required this.updateQuarter3Data,
+      required this.updateQuarter4Data,
+      required this.tabController})
+      : super(key: key);
 
   @override
   _SummaryBarChartState createState() => _SummaryBarChartState();
@@ -35,6 +37,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   List<int> get quarter2Data => widget.quarter2Data;
   List<int> get quarter3Data => widget.quarter3Data;
   List<int> get quarter4Data => widget.quarter4Data;
+  TabController get tabController => widget.tabController;
 
   late List<Quarter> data;
   late TooltipBehavior _tooltip;
@@ -42,10 +45,10 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   @override
   void initState() {
     data = [
-      Quarter("Q1", calculateAverage(quarter1Data)),
-      Quarter("Q2", calculateAverage(quarter2Data)),
-      Quarter("Q3", calculateAverage(quarter3Data)),
-      Quarter("Q4", calculateAverage(quarter4Data)),
+      Quarter("Q1", calculatePercentage(quarter1Data)),
+      Quarter("Q2", calculatePercentage(quarter2Data)),
+      Quarter("Q3", calculatePercentage(quarter3Data)),
+      Quarter("Q4", calculatePercentage(quarter4Data)),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
@@ -78,6 +81,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
       Expanded(
           child: SfCartesianChart(
               primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(maximum: 100),
               tooltipBehavior: _tooltip,
               series: <ChartSeries<Quarter, String>>[
             ColumnSeries<Quarter, String>(
@@ -110,25 +114,23 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            IndividualBarChart(quarter: quarter, quarterData: data),
+        builder: (context) => IndividualBarChart(
+          quarter: quarter,
+          quarterData: data,
+          tabController: tabController,
+        ),
       ),
     );
   }
 }
 
-int calculateAverage(List<int> numbers) {
-  int sum = 0;
-  int count = numbers.length;
-
-  // Calculate the sum of all numbers in the list
-  for (int number in numbers) {
-    sum += number;
-  }
+int calculatePercentage(List<int> numbers) {
+  int sum = numbers.reduce((a, b) => a + b);
+  int maxScore = TableData.calculateMaxDomainScores().reduce((a, b) => a + b);
 
   // Calculate the average and round it to the nearest integer
-  int average = (sum / count).round();
-  return average;
+  int percentage = ((sum / maxScore) * 100).round();
+  return percentage;
 }
 
 class Quarter {

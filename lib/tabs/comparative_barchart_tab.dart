@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:charts_common/src/common/color.dart' as charts_color;
+import '../datas/table_data.dart';
 
 class ComparativeBarChart extends StatefulWidget {
   final List<int> quarter1Data;
@@ -125,6 +125,10 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
           ]))
     ]))));
   }
+}
+
+int calculatePercentage(int score, int maxScore) {
+  return ((score / maxScore) * 100).round();
 }
 
 class Domains {

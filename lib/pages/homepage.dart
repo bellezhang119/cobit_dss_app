@@ -173,7 +173,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   updateQuarter1Data: updateQuarter1Data,
                   updateQuarter2Data: updateQuarter2Data,
                   updateQuarter3Data: updateQuarter3Data,
-                  updateQuarter4Data: updateQuarter4Data),
+                  updateQuarter4Data: updateQuarter4Data,
+                  tabController: _graphTabController),
               ComparativeBarChart(
                   quarter1Data: quarter1Data,
                   quarter2Data: quarter2Data,
