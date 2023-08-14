@@ -47,13 +47,11 @@ class _TableTabState extends State<TableTab> {
   List<DataColumn> _buildColumns() {
     return [
       DataColumn(label: Text('DOMAIN')),
-      DataColumn(label: Text('WEIGHT')),
       DataColumn(label: Text('CODE')),
       DataColumn(label: Text('Gov & Mgmt Objectives')),
       DataColumn(label: Text('AUDIT(0/1)'), numeric: true),
       DataColumn(label: Text('SCORE')),
       DataColumn(label: Text('Total')),
-      DataColumn(label: Text('Percentage')),
     ];
   }
 
@@ -78,7 +76,6 @@ class _TableTabState extends State<TableTab> {
       rows.add(
         DataRow(cells: <DataCell>[
           DataCell(Text(domains[i])),
-          DataCell(Text(weightsValue[i].toString())),
           DataCell(Text(codes[i])),
           DataCell(Text(objectives[i])),
           DataCell(
@@ -103,7 +100,6 @@ class _TableTabState extends State<TableTab> {
                   weightsValue[i])
               .toString())),
           DataCell(Text(totalDomainScores[i].toString())),
-          DataCell(Text('')),
         ]),
       );
     }

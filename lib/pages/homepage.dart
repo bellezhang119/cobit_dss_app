@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           labelColor: Colors.black,
           tabs: const [
             Tab(text: 'Summary'),
-            Tab(text: 'Compare'),
+            Tab(text: 'Annual'),
             Tab(text: 'RAG Chart'),
           ],
         ),
