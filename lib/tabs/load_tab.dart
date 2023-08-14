@@ -3,13 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../datas/table_data.dart';
 
 class LoadTab extends StatefulWidget {
-  final Function updateQuarter1Data;
-  final Function updateQuarter2Data;
-  final Function updateQuarter3Data;
-  final Function updateQuarter4Data;
-  final Function onAuditUpdated;
-  final TabController mainTabController;
-  final TabController graphTabController;
+  final Function(List<int>) updateQuarter1Data;
+  final Function(List<int>) updateQuarter2Data;
+  final Function(List<int>) updateQuarter3Data;
+  final Function(List<int>) updateQuarter4Data;
+  final Function(Map<String, int> updatedAudit) onAuditUpdated;
 
   LoadTab(
       {Key? key,
@@ -17,13 +15,16 @@ class LoadTab extends StatefulWidget {
       required this.updateQuarter2Data,
       required this.updateQuarter3Data,
       required this.updateQuarter4Data,
-      required this.onAuditUpdated,
-      required this.mainTabController,
-      required this.graphTabController})
+      required this.onAuditUpdated})
       : super(key: key);
 
   @override
   _LoadTabState createState() => _LoadTabState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
 }
 
 class _LoadTabState extends State<LoadTab>
@@ -72,7 +73,7 @@ class _LoadTabState extends State<LoadTab>
                   SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      widget.mainTabController.animateTo(0);
+                      // TODO: Navigate to the Bar Chart
                     },
                     child: Text(
                       'Back to Bar Chart',

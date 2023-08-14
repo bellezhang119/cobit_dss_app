@@ -9,6 +9,7 @@ import '../tabs/save_tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -96,22 +97,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     updateQuarter4Data(domainScores);
   }
 
-  // late TabController _mainTabController;
-  // late TabController _graphTabController;
-  // late TabController _saveLoadTabController;
-
-  late final TabController _mainTabController =
-      TabController(length: 3, vsync: this);
-  late final TabController _graphTabController =
-      TabController(length: 2, vsync: this);
-  late final TabController _saveLoadTabController =
-      TabController(length: 2, vsync: this);
+  late TabController _mainTabController;
+  late TabController _graphTabController;
 
   @override
   void initState() {
-    // _mainTabController = TabController(length: 3, vsync: this);
-    // _graphTabController = TabController(length: 2, vsync: this);
-    // _saveLoadTabController = TabController(length: 2, vsync: this);
+    _mainTabController = TabController(length: 3, vsync: this);
+    _graphTabController = TabController(length: 2, vsync: this);
     onAuditUpdated(audits);
     super.initState();
   }
@@ -120,7 +112,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     _mainTabController.dispose();
     _graphTabController.dispose();
-    _saveLoadTabController.dispose();
     super.dispose();
   }
 
@@ -192,13 +183,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Column(
       children: [
         TabBar(
-          controller: _saveLoadTabController, // Use the new TabController here
-          labelColor: Colors.black,
-          tabs: const [Tab(text: 'Save'), Tab(text: 'Load')],
-        ),
+            controller: _graphTabController,
+            labelColor: Colors.black,
+            tabs: const [Tab(text: 'Save'), Tab(text: 'Load')]),
         Expanded(
-          child: TabBarView(controller: _saveLoadTabController, children: [
-            // Use the new TabController here
+          child: TabBarView(controller: _graphTabController, children: [
             SaveTab(quarter1Data: quarter1Data),
             LoadTab(
               updateQuarter1Data: updateQuarter1Data,
@@ -206,11 +195,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               updateQuarter3Data: updateQuarter3Data,
               updateQuarter4Data: updateQuarter4Data,
               onAuditUpdated: onAuditUpdated,
-              mainTabController: _mainTabController,
-              graphTabController: _graphTabController,
             )
           ]),
-        ),
+        )
       ],
     );
   }
