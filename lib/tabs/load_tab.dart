@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../datas/table_data.dart';
 
 class LoadTab extends StatefulWidget {
-  final Function(List<int>) updateQuarter1Data;
-  final Function(List<int>) updateQuarter2Data;
-  final Function(List<int>) updateQuarter3Data;
-  final Function(List<int>) updateQuarter4Data;
-  final Function(Map<String, int> updatedAudit) onAuditUpdated;
+  final Function updateQuarter1Data;
+  final Function updateQuarter2Data;
+  final Function updateQuarter3Data;
+  final Function updateQuarter4Data;
+  final Function onAuditUpdated;
+  final TabController mainTabController;
+  final TabController graphTabController;
 
   LoadTab(
       {Key? key,
@@ -15,7 +17,9 @@ class LoadTab extends StatefulWidget {
       required this.updateQuarter2Data,
       required this.updateQuarter3Data,
       required this.updateQuarter4Data,
-      required this.onAuditUpdated})
+      required this.onAuditUpdated,
+      required this.mainTabController,
+      required this.graphTabController})
       : super(key: key);
 
   @override
@@ -34,37 +38,54 @@ class _LoadTabState extends State<LoadTab>
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('audits').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
+        child: Form(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('audits').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error fetching audit data'),
+                );
+              }
+
+              final documents = snapshot.data?.docs ?? [];
+              final documentIds = documents.map((doc) => doc.id).toList();
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildDropDown('Q1:', q1Value, documentIds),
+                  buildDropDown('Q2:', q2Value, documentIds),
+                  buildDropDown('Q3:', q3Value, documentIds),
+                  buildDropDown('Q4:', q4Value, documentIds),
+                  SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      widget.mainTabController.animateTo(0);
+                    },
+                    child: Text(
+                      'Back to Bar Chart',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: const Color.fromARGB(255, 99, 104, 108),
+                      ),
+                    ),
+                  ),
+                ],
               );
-            }
-
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error fetching audit data'),
-              );
-            }
-
-            final documents = snapshot.data?.docs ?? [];
-            final documentIds = documents.map((doc) => doc.id).toList();
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildDropDown('Q1:', q1Value, documentIds),
-                buildDropDown('Q2:', q2Value, documentIds),
-                buildDropDown('Q3:', q3Value, documentIds),
-                buildDropDown('Q4:', q4Value, documentIds),
-              ],
-            );
-          },
+            },
+          ),
         ),
       ),
     );
@@ -72,44 +93,61 @@ class _LoadTabState extends State<LoadTab>
 
   Widget buildDropDown(
       String label, String? selectedValue, List<String> items) {
-    // If the selectedValue is null (not selected yet), set it to the corresponding state variable
-    selectedValue ??= _getSelectedValue(label);
-
     return Row(
       children: [
         Text(label),
         SizedBox(width: 10),
         Expanded(
-          child: DropdownButton<String>(
-            value: selectedValue,
-            onChanged: (newValue) {
+          child: PopupMenuButton<String>(
+            onSelected: (newValue) {
               setState(() {
                 switch (label) {
                   case 'Q1:':
-                    getDocumentById("Q1", newValue as String);
+                    getDocumentById("Q1", newValue);
                     q1Value = newValue;
                     break;
                   case 'Q2:':
-                    getDocumentById("Q2", newValue as String);
+                    getDocumentById("Q2", newValue);
                     q2Value = newValue;
                     break;
                   case 'Q3:':
-                    getDocumentById("Q3", newValue as String);
+                    getDocumentById("Q3", newValue);
                     q3Value = newValue;
                     break;
                   case 'Q4:':
-                    getDocumentById("Q4", newValue as String);
+                    getDocumentById("Q4", newValue);
                     q4Value = newValue;
                     break;
                 }
               });
             },
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+            itemBuilder: (BuildContext context) {
+              return items.map((String value) {
+                return PopupMenuItem<String>(
+                  value: value,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 80,
+                    child: Text(value),
+                  ),
+                );
+              }).toList();
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    selectedValue ?? "Select an option",
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
+            ),
           ),
         ),
       ],

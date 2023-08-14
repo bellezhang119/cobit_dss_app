@@ -11,54 +11,72 @@ class SaveTab extends StatefulWidget {
 }
 
 class _SaveTabState extends State<SaveTab> {
-  TextEditingController saveNameController = TextEditingController();
 
-  void saveDataToFirestore() async {
-    List<String> auditKey =
-        List.generate(40, (index) => (index + 1).toString());
-    List<int> auditValues = widget.audits.values.toList();
-    Map<String, int> saveAudit = {};
-    for (var i = 0; i < widget.audits.keys.length; i++) {
-      saveAudit[auditKey[i]] = auditValues[i];
-    }
-    String saveName = saveNameController.text;
+  String saveName = ''; //for text in the input box
+  bool isTextShown = false; //used to feedback whether the text is saved
 
-    if (saveName.isNotEmpty) {
-      try {
-        // Reference to the Firestore collection
-        CollectionReference auditsCollection =
-            FirebaseFirestore.instance.collection('audits');
+/*
+ When the save button is pressed:
+ - Save code to the database.
+ - Print data to the console.
+ TODO: Add pop-up prompts for successful and unsuccessful saves.
+ Note: Currently, there's no way to determine save success.
+*/
 
-        // Save the data with the entered save name as the document ID
-        await auditsCollection.doc(saveName).set({
-          'audits': saveAudit,
+  void _handleButtonPress() {
+    setState(() {
+      isTextShown = true;
+    });
+
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        isTextShown = false;
+      });
+    });
+
+    //TODO update data to the database
+    print("save data");
+  }
+
+  Widget _buildTextField() {
+    return TextField(
+      onChanged: (value) {
+        setState(() {
+          saveName = value;
         });
+      },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Enter save name',
+      ),
+    );
+  }
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Data saved successfully')));
-      } catch (error) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error saving data')));
-      }
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Please enter a save name')));
-    }
+  Widget _buildSaveButton() {
+    return ElevatedButton(
+        onPressed: _handleButtonPress, child: Text('save data'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: saveNameController,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter save name',
+        _buildTextField(),
+        // On save: show 'success' if successful, otherwise show 'failure'.
+        if (isTextShown)
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+              'Saved successfully',
+              style: TextStyle(
+                color: Colors.green,
+                fontSize: 12.0,
+              ),
+            ),
           ),
-        ),
-        ElevatedButton(
-            onPressed: saveDataToFirestore, child: Text('Save Q4 Data'))
+        Spacer(), // This will push the button to the bottom of the screen.
+        _buildSaveButton(),
+
       ],
     );
   }
