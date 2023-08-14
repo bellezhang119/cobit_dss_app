@@ -165,33 +165,6 @@ class TableData {
     return totalDomainScores;
   }
 
-  static List<int> calculateMaxDomainScores() {
-    List<int> scores = List<int>.filled(40, 0);
-    List<int> weightValues = _weights.values.toList();
-    for (int i = 0; i < 40; i++) {
-      scores[i] = (weightValues[i] * weightValues[i] * 1 + weightValues[i]);
-    }
-
-    List<int> maxDomainScores = List<int>.filled(5, 0);
-
-    maxDomainScores[0] =
-        scores.sublist(0, 5).fold(0, (value, element) => value + element);
-
-    maxDomainScores[1] =
-        scores.sublist(5, 19).fold(0, (value, element) => value + element);
-
-    maxDomainScores[2] =
-        scores.sublist(19, 30).fold(0, (value, element) => value + element);
-
-    maxDomainScores[3] =
-        scores.sublist(30, 36).fold(0, (value, element) => value + element);
-
-    maxDomainScores[4] =
-        scores.sublist(36, 40).fold(0, (values, element) => values + element);
-
-    return maxDomainScores;
-  }
-
   static List<int> calculateDomainScores(List<int> audits) {
     List<int> scores = List<int>.filled(40, 0);
     List<int> weightValues = _weights.values.toList();
