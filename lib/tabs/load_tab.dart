@@ -81,59 +81,54 @@ class _LoadTabState extends State<LoadTab>
 
   Widget buildDropDown(
       String label, String? selectedValue, List<String> items) {
+    // If the selectedValue is null (not selected yet), set it to the corresponding state variable
+    selectedValue ??= _getSelectedValue(label);
+
     return Row(
       children: [
         Text(label),
         SizedBox(width: 10),
         Expanded(
-          child: PopupMenuButton<String>(
-            onSelected: (newValue) {
-              setState(() {
-                switch (label) {
-                  case 'Q1:':
-                    getDocumentById("Q1", newValue);
-                    q1Value = newValue;
-                    break;
-                  case 'Q2:':
-                    getDocumentById("Q2", newValue);
-                    q2Value = newValue;
-                    break;
-                  case 'Q3:':
-                    getDocumentById("Q3", newValue);
-                    q3Value = newValue;
-                    break;
-                  case 'Q4:':
-                    getDocumentById("Q4", newValue);
-                    q4Value = newValue;
-                    break;
-                }
-              });
-            },
-            itemBuilder: (BuildContext context) {
-              return items.map((String value) {
-                return PopupMenuItem<String>(
-                  value: value,
-                  child: Container(
-                    width:
-                        MediaQuery.of(context).size.width - 80, // 根据您的Row布局进行调整
-                    child: Text(value),
+          child: DropdownButtonHideUnderline(
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButtonFormField<String>(
+                isExpanded: true, // Ensure the button is expanded
+                value: selectedValue,
+                hint: Text("Select an option"), // Hint when no selection
+                onChanged: (newValue) {
+                  setState(() {
+                    switch (label) {
+                      case 'Q1:':
+                        getDocumentById("Q1", newValue as String);
+                        q1Value = newValue;
+                        break;
+                      case 'Q2:':
+                        getDocumentById("Q2", newValue as String);
+                        q2Value = newValue;
+                        break;
+                      case 'Q3:':
+                        getDocumentById("Q3", newValue as String);
+                        q3Value = newValue;
+                        break;
+                      case 'Q4:':
+                        getDocumentById("Q4", newValue as String);
+                        q4Value = newValue;
+                        break;
+                    }
+                  });
+                },
+                items: [
+                  DropdownMenuItem<String>(
+                    value: null,
+                    child: SizedBox(height: 0), // Empty item at the top
                   ),
-                );
-              }).toList();
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    selectedValue ?? "Select an option",
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                  Icon(Icons.arrow_drop_down),
+                  ...items.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ],
               ),
             ),
