@@ -89,49 +89,36 @@ class _LoadTabState extends State<LoadTab>
         Text(label),
         SizedBox(width: 10),
         Expanded(
-          child: DropdownButtonHideUnderline(
-            child: ButtonTheme(
-              alignedDropdown: true,
-              child: DropdownButtonFormField<String>(
-                isExpanded: true, // Ensure the button is expanded
-                value: selectedValue,
-                hint: Text("Select an option"), // Hint when no selection
-                onChanged: (newValue) {
-                  setState(() {
-                    switch (label) {
-                      case 'Q1:':
-                        getDocumentById("Q1", newValue as String);
-                        q1Value = newValue;
-                        break;
-                      case 'Q2:':
-                        getDocumentById("Q2", newValue as String);
-                        q2Value = newValue;
-                        break;
-                      case 'Q3:':
-                        getDocumentById("Q3", newValue as String);
-                        q3Value = newValue;
-                        break;
-                      case 'Q4:':
-                        getDocumentById("Q4", newValue as String);
-                        q4Value = newValue;
-                        break;
-                    }
-                  });
-                },
-                items: [
-                  DropdownMenuItem<String>(
-                    value: null,
-                    child: SizedBox(height: 0), // Empty item at the top
-                  ),
-                  ...items.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ],
-              ),
-            ),
+          child: DropdownButtonFormField<String>(
+            value: selectedValue,
+            onChanged: (newValue) {
+              setState(() {
+                switch (label) {
+                  case 'Q1:':
+                    getDocumentById("Q1", newValue as String);
+                    q1Value = newValue;
+                    break;
+                  case 'Q2:':
+                    getDocumentById("Q2", newValue as String);
+                    q2Value = newValue;
+                    break;
+                  case 'Q3:':
+                    getDocumentById("Q3", newValue as String);
+                    q3Value = newValue;
+                    break;
+                  case 'Q4:':
+                    getDocumentById("Q4", newValue as String);
+                    q4Value = newValue;
+                    break;
+                }
+              });
+            },
+            items: items.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
           ),
         ),
       ],
