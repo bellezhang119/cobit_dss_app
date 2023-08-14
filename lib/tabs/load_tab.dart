@@ -20,27 +20,6 @@ class LoadTab extends StatefulWidget {
 
   @override
   _LoadTabState createState() => _LoadTabState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Put the button's functionality here, such as navigating or opening a dialog
-          },
-          child: Text('Load table'),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                const Color.fromARGB(
-                    255, 0, 0, 0)), // The background color of the button
-            foregroundColor: MaterialStateProperty.all<Color>(
-                Color.fromARGB(255, 0, 0, 0)), // The text color of the button
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _LoadTabState extends State<LoadTab>
@@ -55,8 +34,6 @@ class _LoadTabState extends State<LoadTab>
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
