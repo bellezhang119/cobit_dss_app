@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../datas/table_data.dart';
+import "package:intl/intl.dart";
 
 class SummaryBarChart extends StatefulWidget {
   final List<int> quarter1Data;
@@ -45,10 +46,10 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   @override
   void initState() {
     data = [
-      Quarter("Q1", calculatePercentage(quarter1Data)),
-      Quarter("Q2", calculatePercentage(quarter2Data)),
-      Quarter("Q3", calculatePercentage(quarter3Data)),
-      Quarter("Q4", calculatePercentage(quarter4Data)),
+      Quarter("Q1", calculatePercentage(quarter1Data), Colors.amber),
+      Quarter("Q2", calculatePercentage(quarter2Data), Colors.red),
+      Quarter("Q3", calculatePercentage(quarter3Data), Colors.blue),
+      Quarter("Q4", calculatePercentage(quarter4Data), Colors.grey),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
@@ -75,16 +76,21 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Container(
-                child: Column(children: [
-      Expanded(
+        body:
+            Center(child: Container(child: Column(children: [buildGraph()]))));
+  }
+
+  Widget buildGraph() => Expanded(
           child: SfCartesianChart(
+              title: ChartTitle(text: 'COBOT 6 DSS Annual Summary Bar Chart'),
               primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(maximum: 100),
+              primaryYAxis: NumericAxis(
+                maximum: 100,
+              ),
               tooltipBehavior: _tooltip,
               series: <ChartSeries<Quarter, String>>[
             ColumnSeries<Quarter, String>(
+              dataLabelSettings: DataLabelSettings(isVisible: true),
               onPointTap: (ChartPointDetails details) {
                 print(details.pointIndex);
                 switch (details.pointIndex) {
@@ -105,10 +111,9 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
               dataSource: data,
               xValueMapper: (Quarter data, _) => data.quarter,
               yValueMapper: (Quarter data, _) => data.score,
+              pointColorMapper: (Quarter data, _) => data.color,
             )
-          ]))
-    ]))));
-  }
+          ]));
 
   void navigateToIndividualBarChart(String quarter, List<int> data) {
     Navigator.push(
@@ -136,6 +141,7 @@ int calculatePercentage(List<int> numbers) {
 class Quarter {
   final String quarter;
   final int score;
+  final Color? color;
 
-  Quarter(this.quarter, this.score);
+  Quarter(this.quarter, this.score, this.color);
 }

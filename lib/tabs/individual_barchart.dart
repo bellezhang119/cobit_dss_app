@@ -52,20 +52,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
         body: Center(
             child: Container(
                 child: Column(children: [
-          Expanded(
-            child: SfCartesianChart(
-                title: ChartTitle(text: quarterName),
-                primaryXAxis: CategoryAxis(),
-                primaryYAxis: NumericAxis(maximum: 100),
-                tooltipBehavior: _tooltip,
-                series: <ChartSeries<Domain, String>>[
-                  ColumnSeries<Domain, String>(
-                    dataSource: data,
-                    xValueMapper: (Domain data, _) => data.domain,
-                    yValueMapper: (Domain data, _) => data.score,
-                  )
-                ]),
-          ),
+          buildGraph(),
           ElevatedButton(
               onPressed: () {
                 tabController.animateTo(1);
@@ -81,6 +68,22 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
   int calculatePercentage(int score, int maxScore) {
     return ((score / maxScore) * 100).round();
   }
+
+  Widget buildGraph() => Expanded(
+        child: SfCartesianChart(
+            title: ChartTitle(text: quarterName),
+            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(maximum: 100),
+            tooltipBehavior: _tooltip,
+            series: <ChartSeries<Domain, String>>[
+              ColumnSeries<Domain, String>(
+                dataLabelSettings: DataLabelSettings(isVisible: true),
+                dataSource: data,
+                xValueMapper: (Domain data, _) => data.domain,
+                yValueMapper: (Domain data, _) => data.score,
+              )
+            ]),
+      );
 }
 
 class Domain {
