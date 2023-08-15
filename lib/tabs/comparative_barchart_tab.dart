@@ -38,19 +38,41 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
   late List<Domains> data;
   late TooltipBehavior _tooltip;
 
+  List<int> maxScore = TableData.calculateMaxDomainScores();
+
   @override
   void initState() {
     data = [
-      Domains('Evaluate', widget.quarter1Data[0], quarter2Data[0],
-          quarter3Data[0], quarter4Data[0]),
-      Domains('Align', widget.quarter1Data[1], quarter2Data[1], quarter3Data[1],
-          quarter4Data[1]),
-      Domains('Build', widget.quarter1Data[2], quarter2Data[2], quarter3Data[2],
-          quarter4Data[2]),
-      Domains('Deliver', widget.quarter1Data[3], quarter2Data[3],
-          quarter3Data[3], quarter4Data[3]),
-      Domains('Monitor', widget.quarter1Data[4], quarter2Data[4],
-          quarter3Data[4], quarter4Data[4]),
+      Domains(
+          'Evaluate',
+          calculatePercentage(quarter1Data[0], maxScore[0]),
+          calculatePercentage(quarter2Data[0], maxScore[0]),
+          calculatePercentage(quarter3Data[0], maxScore[0]),
+          calculatePercentage(quarter4Data[0], maxScore[0])),
+      Domains(
+          'Align',
+          calculatePercentage(quarter1Data[1], maxScore[1]),
+          calculatePercentage(quarter2Data[1], maxScore[1]),
+          calculatePercentage(quarter3Data[1], maxScore[1]),
+          calculatePercentage(quarter4Data[1], maxScore[1])),
+      Domains(
+          'Build',
+          calculatePercentage(quarter1Data[2], maxScore[2]),
+          calculatePercentage(quarter2Data[2], maxScore[2]),
+          calculatePercentage(quarter3Data[2], maxScore[2]),
+          calculatePercentage(quarter4Data[2], maxScore[2])),
+      Domains(
+          'Deliver',
+          calculatePercentage(quarter1Data[3], maxScore[3]),
+          calculatePercentage(quarter2Data[3], maxScore[3]),
+          calculatePercentage(quarter3Data[3], maxScore[3]),
+          calculatePercentage(quarter4Data[3], maxScore[3])),
+      Domains(
+          'Monitor',
+          calculatePercentage(quarter1Data[4], maxScore[4]),
+          calculatePercentage(quarter2Data[4], maxScore[4]),
+          calculatePercentage(quarter3Data[4], maxScore[4]),
+          calculatePercentage(quarter4Data[4], maxScore[4])),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
@@ -91,11 +113,13 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
     return Scaffold(
         body: Center(
             child: Container(
-                child: Column(children: [
-      customLegend(),
-      Expanded(
+                child: Column(children: [customLegend(), buildGraph()]))));
+  }
+
+  Widget buildGraph() => Expanded(
           child: SfCartesianChart(
               primaryXAxis: CategoryAxis(),
+              primaryYAxis: NumericAxis(maximum: 100),
               tooltipBehavior: _tooltip,
               series: <ChartSeries<Domains, String>>[
             ColumnSeries<Domains, String>(
@@ -122,9 +146,7 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
                 yValueMapper: (Domains data, _) => data.q4Score,
                 color: Colors.grey,
                 name: 'Q4')
-          ]))
-    ]))));
-  }
+          ]));
 }
 
 int calculatePercentage(int score, int maxScore) {
