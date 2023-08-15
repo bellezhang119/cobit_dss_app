@@ -96,10 +96,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     updateQuarter4Data(domainScores);
   }
 
-  // late TabController _mainTabController;
-  // late TabController _graphTabController;
-  // late TabController _saveLoadTabController;
-
   late final TabController _mainTabController =
       TabController(length: 3, vsync: this);
   late final TabController _graphTabController =
@@ -109,9 +105,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // _mainTabController = TabController(length: 3, vsync: this);
-    // _graphTabController = TabController(length: 2, vsync: this);
-    // _saveLoadTabController = TabController(length: 2, vsync: this);
     onAuditUpdated(audits);
     super.initState();
   }
