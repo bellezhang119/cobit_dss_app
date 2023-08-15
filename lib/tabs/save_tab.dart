@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SaveTab extends StatefulWidget {
-  final List<int> quarter1Data;
+  final Map<String, int> audits;
 
-  SaveTab({Key? key, required this.quarter1Data}) : super(key: key);
+  SaveTab({Key? key, required this.audits}) : super(key: key);
 
   @override
   _SaveTabState createState() => _SaveTabState();
 }
 
 class _SaveTabState extends State<SaveTab> {
+
   String saveName = ''; //for text in the input box
   bool isTextShown = false; //used to feedback whether the text is saved
 
@@ -74,6 +76,7 @@ class _SaveTabState extends State<SaveTab> {
           ),
         Spacer(), // This will push the button to the bottom of the screen.
         _buildSaveButton(),
+
       ],
     );
   }
