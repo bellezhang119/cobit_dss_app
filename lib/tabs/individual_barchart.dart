@@ -61,7 +61,8 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
               child: Text('Navigate to Comparative chart'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-              ))
+              )),
+          ElevatedButton(onPressed: () {}, child: Icon(Icons.ios_share_sharp))
         ]))));
   }
 
