@@ -109,7 +109,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   Widget buildGraph() {
     return SfCartesianChart(
       backgroundColor: Colors.white,
-      title: ChartTitle(text: 'COBOT 6 DSS Annual Summary Bar Chart'),
+      title: ChartTitle(text: 'COBIT 6 DSS Annual Summary Bar Chart'),
       primaryXAxis: CategoryAxis(),
       primaryYAxis: NumericAxis(
         maximum: 100,
