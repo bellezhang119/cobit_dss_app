@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../tabs/barchart_tab.dart';
+import '../tabs/summary_barchart_tab.dart';
+import '../tabs/comparative_barchart_tab.dart';
 import '../tabs/ragchart_tab.dart';
 import '../tabs/table_tab.dart';
 import '../datas/table_data.dart';
@@ -99,11 +100,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late TabController _mainTabController;
   late TabController _graphTabController;
+  late TabController _saveLoadTabController;
 
   @override
   void initState() {
     _mainTabController = TabController(length: 3, vsync: this);
-    _graphTabController = TabController(length: 2, vsync: this);
+    _graphTabController = TabController(length: 3, vsync: this);
+    _saveLoadTabController = TabController(length: 2, vsync: this);
     onAuditUpdated(audits);
     super.initState();
   }
@@ -112,6 +115,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     _mainTabController.dispose();
     _graphTabController.dispose();
+    _saveLoadTabController.dispose();
     super.dispose();
   }
 
@@ -152,7 +156,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           controller: _graphTabController,
           labelColor: Colors.black,
           tabs: const [
-            Tab(text: 'Bar Chart'),
+            Tab(text: 'Summary'),
+            Tab(text: 'Annual'),
             Tab(text: 'RAG Chart'),
           ],
         ),
@@ -160,7 +165,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: TabBarView(
             controller: _graphTabController,
             children: [
-              BarChartSample(
+              SummaryBarChart(
+                  quarter1Data: quarter1Data,
+                  quarter2Data: quarter2Data,
+                  quarter3Data: quarter3Data,
+                  quarter4Data: quarter4Data,
+                  updateQuarter1Data: updateQuarter1Data,
+                  updateQuarter2Data: updateQuarter2Data,
+                  updateQuarter3Data: updateQuarter3Data,
+                  updateQuarter4Data: updateQuarter4Data,
+                  tabController: _graphTabController),
+              ComparativeBarChart(
                   quarter1Data: quarter1Data,
                   quarter2Data: quarter2Data,
                   quarter3Data: quarter3Data,
@@ -170,8 +185,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   updateQuarter3Data: updateQuarter3Data,
                   updateQuarter4Data: updateQuarter4Data),
               RAGChartTab(
-                  domainScores:
-                      quarter4Data), // New RAG Chart Tab with a simple table
+                quarter1Data: quarter1Data,
+                quarter2Data: quarter2Data,
+                quarter3Data: quarter3Data,
+                quarter4Data: quarter4Data,
+              ),
             ],
           ),
         ),
@@ -183,12 +201,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Column(
       children: [
         TabBar(
-            controller: _graphTabController,
+            controller: _saveLoadTabController,
             labelColor: Colors.black,
             tabs: const [Tab(text: 'Save'), Tab(text: 'Load')]),
         Expanded(
-          child: TabBarView(controller: _graphTabController, children: [
-            SaveTab(quarter1Data: quarter1Data),
+          child: TabBarView(controller: _saveLoadTabController, children: [
+            SaveTab(audits: audits),
             LoadTab(
               updateQuarter1Data: updateQuarter1Data,
               updateQuarter2Data: updateQuarter2Data,
