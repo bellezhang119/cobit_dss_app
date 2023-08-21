@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cobit_dss_app/tabs/individual_barchart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../datas/table_data.dart';
 import "package:intl/intl.dart";
@@ -40,6 +47,10 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   List<int> get quarter4Data => widget.quarter4Data;
   TabController get tabController => widget.tabController;
 
+  final _screenshotController = ScreenshotController();
+  Uint8List? bytes;
+  late File customFile;
+
   late List<Quarter> data;
   late TooltipBehavior _tooltip;
 
@@ -76,44 +87,62 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-            Center(child: Container(child: Column(children: [buildGraph()]))));
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: Screenshot(
+                controller: _screenshotController,
+                child: buildGraph(),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: takeScreenshot,
+              child: Icon(Icons.ios_share_sharp),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget buildGraph() => Expanded(
-          child: SfCartesianChart(
-              title: ChartTitle(text: 'COBOT 6 DSS Annual Summary Bar Chart'),
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(
-                maximum: 100,
-              ),
-              tooltipBehavior: _tooltip,
-              series: <ChartSeries<Quarter, String>>[
-            ColumnSeries<Quarter, String>(
-              dataLabelSettings: DataLabelSettings(isVisible: true),
-              onPointTap: (ChartPointDetails details) {
-                print(details.pointIndex);
-                switch (details.pointIndex) {
-                  case 0:
-                    navigateToIndividualBarChart("Q1", quarter1Data);
-                    break;
-                  case 1:
-                    navigateToIndividualBarChart("Q2", quarter2Data);
-                    break;
-                  case 2:
-                    navigateToIndividualBarChart("Q3", quarter3Data);
-                    break;
-                  case 3:
-                    navigateToIndividualBarChart("Q4", quarter4Data);
-                    break;
-                }
-              },
-              dataSource: data,
-              xValueMapper: (Quarter data, _) => data.quarter,
-              yValueMapper: (Quarter data, _) => data.score,
-              pointColorMapper: (Quarter data, _) => data.color,
-            )
-          ]));
+  Widget buildGraph() {
+    return SfCartesianChart(
+      backgroundColor: Colors.white,
+      title: ChartTitle(text: 'COBOT 6 DSS Annual Summary Bar Chart'),
+      primaryXAxis: CategoryAxis(),
+      primaryYAxis: NumericAxis(
+        maximum: 100,
+      ),
+      tooltipBehavior: _tooltip,
+      series: <ChartSeries<Quarter, String>>[
+        ColumnSeries<Quarter, String>(
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+          onPointTap: (ChartPointDetails details) {
+            print(details.pointIndex);
+            switch (details.pointIndex) {
+              case 0:
+                navigateToIndividualBarChart("Q1", quarter1Data);
+                break;
+              case 1:
+                navigateToIndividualBarChart("Q2", quarter2Data);
+                break;
+              case 2:
+                navigateToIndividualBarChart("Q3", quarter3Data);
+                break;
+              case 3:
+                navigateToIndividualBarChart("Q4", quarter4Data);
+                break;
+            }
+          },
+          dataSource: data,
+          xValueMapper: (Quarter data, _) => data.quarter,
+          yValueMapper: (Quarter data, _) => data.score,
+          pointColorMapper: (Quarter data, _) => data.color,
+        ),
+      ],
+    );
+  }
 
   void navigateToIndividualBarChart(String quarter, List<int> data) {
     Navigator.push(
@@ -126,6 +155,12 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
         ),
       ),
     );
+  }
+
+  void takeScreenshot() async {
+    await _screenshotController.capture().then((capturedImage) async {
+      ImageGallerySaver.saveImage(capturedImage as Uint8List);
+    });
   }
 }
 

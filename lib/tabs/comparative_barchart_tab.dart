@@ -113,7 +113,11 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
     return Scaffold(
         body: Center(
             child: Container(
-                child: Column(children: [customLegend(), buildGraph()]))));
+                child: Column(children: [
+      customLegend(),
+      buildGraph(),
+      ElevatedButton(onPressed: () {}, child: Icon(Icons.ios_share_sharp))
+    ]))));
   }
 
   Widget buildGraph() => Expanded(
