@@ -85,27 +85,15 @@ class TableData {
     'Managed assurance',
   ];
 
+  static final List<String> _domainCodes = _weights.keys.toList();
+
   static final List<String> _domains = [
-    'Evaluate, Direct and Monitor',
+    'Evaluate',
     '',
     '',
     '',
     '',
-    'Align, Plan and Organise',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    'Build, Acquire and Implement',
+    'Align',
     '',
     '',
     '',
@@ -116,13 +104,27 @@ class TableData {
     '',
     '',
     '',
-    'Deliver, Service and Support',
+    '',
+    '',
+    '',
+    'Build',
     '',
     '',
     '',
     '',
     '',
-    'Monitor, Evaluate and Assess',
+    '',
+    '',
+    '',
+    '',
+    '',
+    'Deliver',
+    '',
+    '',
+    '',
+    '',
+    '',
+    'Monitor',
     '',
     '',
     '',
@@ -131,6 +133,7 @@ class TableData {
   static Map<String, int> get weights => Map.unmodifiable(_weights);
   static List<String> get objectives => List.unmodifiable(_objectives);
   static List<String> get domains => List.unmodifiable(_domains);
+  static List<String> get domainCodes => List.unmodifiable(_domainCodes);
 
   static List<int> calculateScores(List<int> audits) {
     List<int> scores = List<int>.filled(40, 0);
@@ -160,6 +163,33 @@ class TableData {
         scores.sublist(36, 40).fold(0, (values, element) => values + element);
 
     return totalDomainScores;
+  }
+
+  static List<int> calculateMaxDomainScores() {
+    List<int> scores = List<int>.filled(40, 0);
+    List<int> weightValues = _weights.values.toList();
+    for (int i = 0; i < 40; i++) {
+      scores[i] = (weightValues[i] * weightValues[i] * 1 + weightValues[i]);
+    }
+
+    List<int> maxDomainScores = List<int>.filled(5, 0);
+
+    maxDomainScores[0] =
+        scores.sublist(0, 5).fold(0, (value, element) => value + element);
+
+    maxDomainScores[1] =
+        scores.sublist(5, 19).fold(0, (value, element) => value + element);
+
+    maxDomainScores[2] =
+        scores.sublist(19, 30).fold(0, (value, element) => value + element);
+
+    maxDomainScores[3] =
+        scores.sublist(30, 36).fold(0, (value, element) => value + element);
+
+    maxDomainScores[4] =
+        scores.sublist(36, 40).fold(0, (values, element) => values + element);
+
+    return maxDomainScores;
   }
 
   static List<int> calculateDomainScores(List<int> audits) {
