@@ -1,0 +1,47 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
+import 'package:cobit_dss_app/tabs/load_tab.dart';
+
+void main() {
+  group('LoadTab tests', () {
+    testWidgets('LoadTab should display dropdowns for each quarter',
+        (WidgetTester tester) async {
+      // Build the widget in a test environment
+      await tester.pumpWidget(MaterialApp(
+        home: LoadTab(
+          updateQuarter1Data: (_) {},
+          updateQuarter2Data: (_) {},
+          updateQuarter3Data: (_) {},
+          updateQuarter4Data: (_) {},
+          onAuditUpdated: (_) {},
+        ),
+      ));
+
+      // Allow the widget tree to build and the StreamBuilder to emit its initial state
+      await tester.pumpAndSettle();
+
+      // Check for the existence of dropdown menus for each quarter
+      expect(find.text('Q1:'), findsOneWidget);
+      expect(find.text('Q2:'), findsOneWidget);
+      expect(find.text('Q3:'), findsOneWidget);
+      expect(find.text('Q4:'), findsOneWidget);
+    });
+
+    testWidgets('LoadTab should show a progress indicator when fetching data',
+        (WidgetTester tester) async {
+      // Build the widget
+      await tester.pumpWidget(MaterialApp(
+        home: LoadTab(
+          updateQuarter1Data: (_) {},
+          updateQuarter2Data: (_) {},
+          updateQuarter3Data: (_) {},
+          updateQuarter4Data: (_) {},
+          onAuditUpdated: (_) {},
+        ),
+      ));
+
+      // Since the StreamBuilder will start with ConnectionState.waiting, we should see a CircularProgressIndicator
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+  });
+}
