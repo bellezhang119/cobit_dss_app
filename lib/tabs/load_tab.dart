@@ -142,12 +142,13 @@ class _LoadTabState extends State<LoadTab>
 
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> auditsData = data['audits'] as Map<String, dynamic>;
 
-      List<String> sortedKeys = data.keys.toList()
+      List<String> sortedKeys = auditsData.keys.toList()
         ..sort((a, b) => int.parse(a).compareTo(int.parse(b)));
       Map<String, int> sortedMap = {};
       sortedKeys.forEach((key) {
-        sortedMap[key] = data[key];
+        sortedMap[key] = auditsData[key];
       });
 
       switch (quarter) {
