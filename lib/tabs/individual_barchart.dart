@@ -8,12 +8,14 @@ class IndividualBarChart extends StatefulWidget {
   final String quarter;
   final List<int> quarterData;
   final TabController tabController;
+  final Color? color;
 
   IndividualBarChart(
       {Key? key,
       required this.quarter,
       required this.quarterData,
-      required this.tabController})
+      required this.tabController,
+      required this.color})
       : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
   List<int> get quarterData => widget.quarterData;
   List<int> get quarter => widget.quarterData;
   TabController get tabController => widget.tabController;
+  Color? get color => widget.color;
 
   late String quarterName;
   late List<Domain> data;
@@ -82,6 +85,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
                 dataSource: data,
                 xValueMapper: (Domain data, _) => data.domain,
                 yValueMapper: (Domain data, _) => data.score,
+                color: color,
               )
             ]),
       );
