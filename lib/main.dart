@@ -5,6 +5,7 @@ import 'package:cobit_dss_app/responsive/web_screen_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cobit_dss_app/pages/homepage.dart';
+import 'package:cobit_dss_app/pages/landingpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          return const HomePage();
+          return const LandingPage();
         },
         stream: null,
       ),
