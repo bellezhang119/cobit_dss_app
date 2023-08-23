@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../datas/table_data.dart';
 
@@ -37,6 +41,8 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
 
   late List<Domains> data;
   late TooltipBehavior _tooltip;
+
+  final _screenshotController = ScreenshotController();
 
   List<int> maxScore = TableData.calculateMaxDomainScores();
 
@@ -115,42 +121,53 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
             child: Container(
                 child: Column(children: [
       customLegend(),
-      buildGraph(),
-      ElevatedButton(onPressed: () {}, child: Icon(Icons.ios_share_sharp))
+      Expanded(
+          child: Screenshot(
+              child: buildGraph(), controller: _screenshotController)),
+      ElevatedButton(
+          onPressed: takeScreenshot, child: Icon(Icons.ios_share_sharp))
     ]))));
   }
 
-  Widget buildGraph() => Expanded(
-          child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(maximum: 100),
-              tooltipBehavior: _tooltip,
-              series: <ChartSeries<Domains, String>>[
-            ColumnSeries<Domains, String>(
-                dataSource: data,
-                xValueMapper: (Domains data, _) => data.domain,
-                yValueMapper: (Domains data, _) => data.q1Score,
-                color: Colors.yellow,
-                name: 'Q1'),
-            ColumnSeries<Domains, String>(
-                dataSource: data,
-                xValueMapper: (Domains data, _) => data.domain,
-                yValueMapper: (Domains data, _) => data.q2Score,
-                color: Colors.deepOrange,
-                name: 'Q2'),
-            ColumnSeries<Domains, String>(
-                dataSource: data,
-                xValueMapper: (Domains data, _) => data.domain,
-                yValueMapper: (Domains data, _) => data.q3Score,
-                color: Colors.lightBlue,
-                name: 'Q3'),
-            ColumnSeries<Domains, String>(
-                dataSource: data,
-                xValueMapper: (Domains data, _) => data.domain,
-                yValueMapper: (Domains data, _) => data.q4Score,
-                color: Colors.grey,
-                name: 'Q4')
-          ]));
+  Widget buildGraph() {
+    return SfCartesianChart(
+        backgroundColor: Colors.white,
+        primaryXAxis: CategoryAxis(),
+        primaryYAxis: NumericAxis(maximum: 100),
+        tooltipBehavior: _tooltip,
+        series: <ChartSeries<Domains, String>>[
+          ColumnSeries<Domains, String>(
+              dataSource: data,
+              xValueMapper: (Domains data, _) => data.domain,
+              yValueMapper: (Domains data, _) => data.q1Score,
+              color: Colors.yellow,
+              name: 'Q1'),
+          ColumnSeries<Domains, String>(
+              dataSource: data,
+              xValueMapper: (Domains data, _) => data.domain,
+              yValueMapper: (Domains data, _) => data.q2Score,
+              color: Colors.deepOrange,
+              name: 'Q2'),
+          ColumnSeries<Domains, String>(
+              dataSource: data,
+              xValueMapper: (Domains data, _) => data.domain,
+              yValueMapper: (Domains data, _) => data.q3Score,
+              color: Colors.lightBlue,
+              name: 'Q3'),
+          ColumnSeries<Domains, String>(
+              dataSource: data,
+              xValueMapper: (Domains data, _) => data.domain,
+              yValueMapper: (Domains data, _) => data.q4Score,
+              color: Colors.grey,
+              name: 'Q4')
+        ]);
+  }
+
+  void takeScreenshot() async {
+    await _screenshotController.capture().then((capturedImage) async {
+      ImageGallerySaver.saveImage(capturedImage as Uint8List);
+    });
+  }
 }
 
 int calculatePercentage(int score, int maxScore) {

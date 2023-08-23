@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:charts_common/src/common/color.dart' as charts_color;
 import '../datas/table_data.dart';
@@ -33,6 +37,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
   late TooltipBehavior _tooltip;
 
   List<int> maxScore = TableData.calculateMaxDomainScores();
+  final _screenshotController = ScreenshotController();
 
   @override
   void initState() {
@@ -55,7 +60,11 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
         body: Center(
             child: Container(
                 child: Column(children: [
-          buildGraph(),
+          Expanded(
+              child: Screenshot(
+            child: buildGraph(),
+            controller: _screenshotController,
+          )),
           ElevatedButton(
               onPressed: () {
                 tabController.animateTo(1);
@@ -65,7 +74,8 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               )),
-          ElevatedButton(onPressed: () {}, child: Icon(Icons.ios_share_sharp))
+          ElevatedButton(
+              onPressed: takeScreenshot, child: Icon(Icons.ios_share_sharp))
         ]))));
   }
 
@@ -73,22 +83,29 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
     return ((score / maxScore) * 100).round();
   }
 
-  Widget buildGraph() => Expanded(
-        child: SfCartesianChart(
-            title: ChartTitle(text: quarterName),
-            primaryXAxis: CategoryAxis(),
-            primaryYAxis: NumericAxis(maximum: 100),
-            tooltipBehavior: _tooltip,
-            series: <ChartSeries<Domain, String>>[
-              ColumnSeries<Domain, String>(
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-                dataSource: data,
-                xValueMapper: (Domain data, _) => data.domain,
-                yValueMapper: (Domain data, _) => data.score,
-                color: color,
-              )
-            ]),
-      );
+  Widget buildGraph() {
+    return SfCartesianChart(
+        backgroundColor: Colors.white,
+        title: ChartTitle(text: quarterName),
+        primaryXAxis: CategoryAxis(),
+        primaryYAxis: NumericAxis(maximum: 100),
+        tooltipBehavior: _tooltip,
+        series: <ChartSeries<Domain, String>>[
+          ColumnSeries<Domain, String>(
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+            dataSource: data,
+            xValueMapper: (Domain data, _) => data.domain,
+            yValueMapper: (Domain data, _) => data.score,
+            color: color,
+          )
+        ]);
+  }
+
+  void takeScreenshot() async {
+    await _screenshotController.capture().then((capturedImage) async {
+      ImageGallerySaver.saveImage(capturedImage as Uint8List);
+    });
+  }
 }
 
 class Domain {

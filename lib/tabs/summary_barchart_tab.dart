@@ -48,8 +48,6 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   TabController get tabController => widget.tabController;
 
   final _screenshotController = ScreenshotController();
-  Uint8List? bytes;
-  late File customFile;
 
   late List<Quarter> data;
   late TooltipBehavior _tooltip;
