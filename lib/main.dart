@@ -16,7 +16,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // Root build function
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             }
           }
 
-          // means connection to future hasnt been made yet
+        
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
