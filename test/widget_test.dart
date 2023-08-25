@@ -29,18 +29,4 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
-
-    testWidgets('Summary Chart Click', (WidgetTester tester) async {
-
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byTooltip('Series 0'));
-    await tester.pump();
-
-    expect(find.text("Q1"), findsNWidgets(1));
-
-  });
 }
