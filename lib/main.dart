@@ -5,6 +5,7 @@ import 'package:cobit_dss_app/responsive/web_screen_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cobit_dss_app/pages/homepage.dart';
+import 'package:cobit_dss_app/pages/landingpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // Root build function
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,15 +40,16 @@ class MyApp extends StatelessWidget {
             }
           }
 
-          // means connection to future hasnt been made yet
+        
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          return const HomePage();
+          return const LandingPage();
         },
+        stream: null,
       ),
     );
   }

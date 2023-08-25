@@ -48,8 +48,6 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
   TabController get tabController => widget.tabController;
 
   final _screenshotController = ScreenshotController();
-  Uint8List? bytes;
-  late File customFile;
 
   late List<Quarter> data;
   late TooltipBehavior _tooltip;
@@ -122,16 +120,16 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
             print(details.pointIndex);
             switch (details.pointIndex) {
               case 0:
-                navigateToIndividualBarChart("Q1", quarter1Data);
+                navigateToIndividualBarChart("Q1", quarter1Data, Colors.amber);
                 break;
               case 1:
-                navigateToIndividualBarChart("Q2", quarter2Data);
+                navigateToIndividualBarChart("Q2", quarter2Data, Colors.red);
                 break;
               case 2:
-                navigateToIndividualBarChart("Q3", quarter3Data);
+                navigateToIndividualBarChart("Q3", quarter3Data, Colors.blue);
                 break;
               case 3:
-                navigateToIndividualBarChart("Q4", quarter4Data);
+                navigateToIndividualBarChart("Q4", quarter4Data, Colors.grey);
                 break;
             }
           },
@@ -144,15 +142,16 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
     );
   }
 
-  void navigateToIndividualBarChart(String quarter, List<int> data) {
+  void navigateToIndividualBarChart(
+      String quarter, List<int> data, Color? color) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => IndividualBarChart(
-          quarter: quarter,
-          quarterData: data,
-          tabController: tabController,
-        ),
+            quarter: quarter,
+            quarterData: data,
+            tabController: tabController,
+            color: color),
       ),
     );
   }
