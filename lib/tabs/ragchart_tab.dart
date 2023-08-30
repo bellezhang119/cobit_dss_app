@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 
 class RAGChartTab extends StatefulWidget {
   final List<int> quarter1Data;

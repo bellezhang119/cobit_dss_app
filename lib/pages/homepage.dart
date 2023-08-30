@@ -4,7 +4,7 @@ import '../tabs/summary_barchart_tab.dart';
 import '../tabs/comparative_barchart_tab.dart';
 import '../tabs/ragchart_tab.dart';
 import '../tabs/table_tab.dart';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 import '../tabs/load_tab.dart';
 import '../tabs/save_tab.dart';
 

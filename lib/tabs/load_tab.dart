@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 
 class LoadTab extends StatefulWidget {
   final Function(List<int>) updateQuarter1Data;

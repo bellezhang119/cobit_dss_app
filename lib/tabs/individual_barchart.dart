@@ -1,12 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:charts_common/src/common/color.dart' as charts_color;
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 
 class IndividualBarChart extends StatefulWidget {
   final String quarter;

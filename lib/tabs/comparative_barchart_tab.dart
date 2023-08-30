@@ -5,7 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 
 class ComparativeBarChart extends StatefulWidget {
   final List<int> quarter1Data;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 
 class TableTab extends StatefulWidget {
   Map<String, int> audits;

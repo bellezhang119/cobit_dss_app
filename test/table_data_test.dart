@@ -1,4 +1,4 @@
-import 'package:cobit_dss_app/datas/table_data.dart';
+import 'package:cobit_dss_app/data/table_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

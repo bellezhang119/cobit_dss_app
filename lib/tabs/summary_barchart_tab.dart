@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../datas/table_data.dart';
+import '../data/table_data.dart';
 import "package:intl/intl.dart";
 
 class SummaryBarChart extends StatefulWidget {
