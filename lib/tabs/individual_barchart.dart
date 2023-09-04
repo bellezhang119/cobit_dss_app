@@ -24,6 +24,7 @@ class IndividualBarChart extends StatefulWidget {
 }
 
 class _IndividualBarChartState extends State<IndividualBarChart> {
+  // Get widget data
   List<int> get quarterData => widget.quarterData;
   List<int> get quarter => widget.quarterData;
   TabController get tabController => widget.tabController;
@@ -36,6 +37,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
   List<int> maxScore = TableData.calculateMaxDomainScores();
   final _screenshotController = ScreenshotController();
 
+  // Initialise bar chart data
   @override
   void initState() {
     quarterName = widget.quarter;
@@ -76,10 +78,12 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
         ]))));
   }
 
+  // Calculate score percentage
   int calculatePercentage(int score, int maxScore) {
     return ((score / maxScore) * 100).round();
   }
 
+  // Build bar chart widget
   Widget buildGraph() {
     return SfCartesianChart(
         backgroundColor: Colors.white,
@@ -98,6 +102,7 @@ class _IndividualBarChartState extends State<IndividualBarChart> {
         ]);
   }
 
+  // Take screenshot of widget and save to local gallery
   void takeScreenshot() async {
     await _screenshotController.capture().then((capturedImage) async {
       ImageGallerySaver.saveImage(capturedImage as Uint8List);

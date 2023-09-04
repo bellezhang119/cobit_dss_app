@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -34,6 +33,7 @@ class ComparativeBarChart extends StatefulWidget {
 }
 
 class _ComparativeBarChartState extends State<ComparativeBarChart> {
+  // Get quarter data
   List<int> get quarter1Data => widget.quarter1Data;
   List<int> get quarter2Data => widget.quarter2Data;
   List<int> get quarter3Data => widget.quarter3Data;
@@ -44,8 +44,10 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
 
   final _screenshotController = ScreenshotController();
 
+  // Get maximum possible domain scores
   List<int> maxScore = TableData.calculateMaxDomainScores();
 
+  // Prepare barchart data
   @override
   void initState() {
     data = [
@@ -102,6 +104,7 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
     );
   }
 
+  // Build custom legend
   Widget customLegend() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -129,6 +132,7 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
     ]))));
   }
 
+  // Build bar chart
   Widget buildGraph() {
     return SfCartesianChart(
         backgroundColor: Colors.white,
@@ -163,6 +167,7 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
         ]);
   }
 
+  // Take screenshot and save to local gallery
   void takeScreenshot() async {
     await _screenshotController.capture().then((capturedImage) async {
       ImageGallerySaver.saveImage(capturedImage as Uint8List);
@@ -170,10 +175,12 @@ class _ComparativeBarChartState extends State<ComparativeBarChart> {
   }
 }
 
+// Calculate percentage of scores
 int calculatePercentage(int score, int maxScore) {
   return ((score / maxScore) * 100).round();
 }
 
+// Data class for bar chart
 class Domains {
   final String domain;
   final int q1Score;

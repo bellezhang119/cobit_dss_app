@@ -9,6 +9,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _landingPageState extends State<LandingPage> {
+  // Landing page with app starts
   @override
   Widget build(BuildContext context) {
     return Scaffold(

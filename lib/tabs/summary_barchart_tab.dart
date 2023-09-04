@@ -104,6 +104,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
     );
   }
 
+  // Build graph widget
   Widget buildGraph() {
     return SfCartesianChart(
       backgroundColor: Colors.white,
@@ -142,6 +143,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
     );
   }
 
+  // Navigate to respective quarter bar chart
   void navigateToIndividualBarChart(
       String quarter, List<int> data, Color? color) {
     Navigator.push(
@@ -156,6 +158,7 @@ class _SummaryBarChartState extends State<SummaryBarChart> {
     );
   }
 
+  // Take screenshot of widget and save to local gallery
   void takeScreenshot() async {
     await _screenshotController.capture().then((capturedImage) async {
       ImageGallerySaver.saveImage(capturedImage as Uint8List);

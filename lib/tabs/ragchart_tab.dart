@@ -167,6 +167,7 @@ class _RAGChartTab extends State<RAGChartTab> {
     );
   }
 
+  // Get table cell color
   Color getTableCellColor(int score, int maxScore) {
     double percentage = (score / maxScore);
 
@@ -180,9 +181,6 @@ class _RAGChartTab extends State<RAGChartTab> {
   }
 
   Color _getTextColorForScoreBox(Color backgroundColor) {
-    // Determine the appropriate text color for the score box based on the background color
-    // You can customize this logic as needed
-    // For example, use a contrasting color if the background color is dark, and vice versa
     return Colors.white;
   }
 }

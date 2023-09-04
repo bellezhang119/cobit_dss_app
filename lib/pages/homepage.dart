@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  // Prepare a list of audits
   Map<String, int> audits = {
     'EDM01': 1,
     'EDM02': 1,
@@ -59,11 +60,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     'MEA04': 1,
   };
 
+  // Prepare audit scores for each quarter
   List<int> quarter1Data = [70, 50, 30, 20, 40];
   List<int> quarter2Data = [40, 20, 50, 70, 30];
   List<int> quarter3Data = [60, 40, 20, 50, 10];
   List<int> quarter4Data = [70, 50, 30, 20, 40];
 
+  // Updated quarter score functions
   void updateQuarter1Data(List<int> newData) {
     setState(() {
       quarter1Data = newData;
@@ -88,6 +91,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
+  // When onAuditUpdated callback function is triggered, update quarter 4 data
   void onAuditUpdated(Map<String, int> updatedAudit) {
     setState(() {
       audits = updatedAudit;
@@ -98,10 +102,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     updateQuarter4Data(domainScores);
   }
 
+  // Creating tab controllers
   late TabController _mainTabController;
   late TabController _graphTabController;
   late TabController _saveLoadTabController;
 
+  // Initial function
   @override
   void initState() {
     _mainTabController = TabController(length: 3, vsync: this);
@@ -111,6 +117,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
+  // Dispose controllers
   @override
   void dispose() {
     _mainTabController.dispose();
@@ -148,6 +155,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  // Build graph tab widget
   Widget _buildGraphTab() {
     return Column(
       children: [
@@ -197,6 +205,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  // Build save load tab widget
   Widget _buildSaveLoadTab() {
     return Column(
       children: [

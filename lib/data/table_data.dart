@@ -130,62 +130,62 @@ class TableData {
     '',
   ];
 
+  // Getters to access the data
   static Map<String, int> get weights => Map.unmodifiable(_weights);
   static List<String> get objectives => List.unmodifiable(_objectives);
   static List<String> get domains => List.unmodifiable(_domains);
   static List<String> get domainCodes => List.unmodifiable(_domainCodes);
 
+  // Calculate scores based on audit data
   static List<int> calculateScores(List<int> audits) {
+    // Initialize an empty list to store scores
     List<int> scores = List<int>.filled(40, 0);
     List<int> weightValues = _weights.values.toList();
     if (audits.length == 40) {
+      // Calculate scores for each objective based on weights and audit data
       for (int i = 0; i < 40; i++) {
         scores[i] =
             (weightValues[i] * weightValues[i] * audits[i]) + weightValues[i];
       }
     }
 
-    List<int> totalDomainScores = List<int>.filled(40, 0);
+    // Calculate total scores for each domain
+    List<int> totalDomainScores = List<int>.filled(5, 0);
 
     totalDomainScores[0] =
         scores.sublist(0, 5).fold(0, (value, element) => value + element);
-
-    totalDomainScores[5] =
+    totalDomainScores[1] =
         scores.sublist(5, 19).fold(0, (value, element) => value + element);
-
-    totalDomainScores[19] =
+    totalDomainScores[2] =
         scores.sublist(19, 30).fold(0, (value, element) => value + element);
-
-    totalDomainScores[30] =
+    totalDomainScores[3] =
         scores.sublist(30, 36).fold(0, (value, element) => value + element);
-
-    totalDomainScores[36] =
+    totalDomainScores[4] =
         scores.sublist(36, 40).fold(0, (values, element) => values + element);
 
     return totalDomainScores;
   }
 
+  // Calculate maximum possible scores for each domain
   static List<int> calculateMaxDomainScores() {
+    // Initialize an empty list to store maximum scores
     List<int> scores = List<int>.filled(40, 0);
     List<int> weightValues = _weights.values.toList();
     for (int i = 0; i < 40; i++) {
       scores[i] = (weightValues[i] * weightValues[i] * 1 + weightValues[i]);
     }
 
+    // Calculate total maximum scores for each domain
     List<int> maxDomainScores = List<int>.filled(5, 0);
 
     maxDomainScores[0] =
         scores.sublist(0, 5).fold(0, (value, element) => value + element);
-
     maxDomainScores[1] =
         scores.sublist(5, 19).fold(0, (value, element) => value + element);
-
     maxDomainScores[2] =
         scores.sublist(19, 30).fold(0, (value, element) => value + element);
-
     maxDomainScores[3] =
         scores.sublist(30, 36).fold(0, (value, element) => value + element);
-
     maxDomainScores[4] =
         scores.sublist(36, 40).fold(0, (values, element) => values + element);
 

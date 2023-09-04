@@ -1,22 +1,26 @@
+// Import necessary packages
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/table_data.dart';
 
+// Define a Flutter StatefulWidget for the LoadTab
 class LoadTab extends StatefulWidget {
+  // Define callback functions to update data in the parent widget
   final Function(List<int>) updateQuarter1Data;
   final Function(List<int>) updateQuarter2Data;
   final Function(List<int>) updateQuarter3Data;
   final Function(List<int>) updateQuarter4Data;
   final Function(Map<String, int> updatedAudit) onAuditUpdated;
 
-  LoadTab(
-      {Key? key,
-      required this.updateQuarter1Data,
-      required this.updateQuarter2Data,
-      required this.updateQuarter3Data,
-      required this.updateQuarter4Data,
-      required this.onAuditUpdated})
-      : super(key: key);
+  // Constructor to initialize the callback functions
+  LoadTab({
+    Key? key,
+    required this.updateQuarter1Data,
+    required this.updateQuarter2Data,
+    required this.updateQuarter3Data,
+    required this.updateQuarter4Data,
+    required this.onAuditUpdated,
+  }) : super(key: key);
 
   @override
   _LoadTabState createState() => _LoadTabState();
@@ -27,6 +31,7 @@ class _LoadTabState extends State<LoadTab>
   @override
   bool get wantKeepAlive => true;
 
+  // Variables to store selected values for each quarter
   String? q1Value;
   String? q2Value;
   String? q3Value;
@@ -38,23 +43,28 @@ class _LoadTabState extends State<LoadTab>
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder<QuerySnapshot>(
+          // Stream to listen to changes in the 'audits' collection in Firestore
           stream: FirebaseFirestore.instance.collection('audits').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
+              // Display a loading indicator while waiting for data
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
 
             if (snapshot.hasError) {
+              // Display an error message if there's an error fetching data
               return Center(
                 child: Text('Error fetching audit data'),
               );
             }
 
+            // Extract documents and their IDs from the snapshot
             final documents = snapshot.data?.docs ?? [];
             final documentIds = documents.map((doc) => doc.id).toList();
 
+            // Build a column of dropdown widgets for each quarter
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,6 +80,7 @@ class _LoadTabState extends State<LoadTab>
     );
   }
 
+  // Widget to build a dropdown with a label
   Widget buildDropDown(
       String label, String? selectedValue, List<String> items) {
     // If the selectedValue is null (not selected yet), set it to the corresponding state variable
@@ -116,6 +127,7 @@ class _LoadTabState extends State<LoadTab>
     );
   }
 
+  // Helper function to get the selected value for a given label
   String? _getSelectedValue(String label) {
     switch (label) {
       case 'Q1:':
@@ -131,6 +143,7 @@ class _LoadTabState extends State<LoadTab>
     }
   }
 
+  // Function to fetch and process a document from Firestore by its ID
   void getDocumentById(String quarter, String documentId) async {
     try {
       // Get a reference to the document with the specified ID
@@ -140,10 +153,12 @@ class _LoadTabState extends State<LoadTab>
       // Get the document snapshot
       DocumentSnapshot documentSnapshot = await documentReference.get();
 
+      // Extract audit data from the document snapshot
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       Map<String, dynamic> auditsData = data['audits'] as Map<String, dynamic>;
 
+      // Sort the audit data by keys (quarter numbers)
       List<String> sortedKeys = auditsData.keys.toList()
         ..sort((a, b) => int.parse(a).compareTo(int.parse(b)));
       Map<String, int> sortedMap = {};
@@ -151,6 +166,7 @@ class _LoadTabState extends State<LoadTab>
         sortedMap[key] = auditsData[key];
       });
 
+      // Depending on the quarter, update the data in the parent widget using the callback functions
       switch (quarter) {
         case "Q1":
           List<int> audit = sortedMap.values.toList();
@@ -178,6 +194,7 @@ class _LoadTabState extends State<LoadTab>
     }
   }
 
+  // Function to combine two lists into a map
   Map<String, int> combineListsIntoMap(List<String> keys, List<int> values) {
     Map<String, int> result = {};
 
