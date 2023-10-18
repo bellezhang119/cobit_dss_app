@@ -150,7 +150,7 @@ class TableData {
     }
 
     // Calculate total scores for each domain
-    List<int> totalDomainScores = List<int>.filled(5, 0);
+    List<int> totalDomainScores = List<int>.filled(40, 0);
 
     totalDomainScores[0] =
         scores.sublist(0, 5).fold(0, (value, element) => value + element);

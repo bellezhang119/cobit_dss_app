@@ -13,6 +13,7 @@ class SaveTab extends StatefulWidget {
 class _SaveTabState extends State<SaveTab> {
   TextEditingController saveNameController = TextEditingController();
 
+  // Connect and load document to firestore
   void saveDataToFirestore() async {
     List<String> auditKey =
         List.generate(40, (index) => (index + 1).toString());

@@ -75,6 +75,7 @@ class _TableTabState extends State<TableTab> {
 
     List<DataRow> rows = [];
 
+    print(totalDomainScores.length);
     for (int i = 0; i < 40; i++) {
       // Loop from 0 to 39
       if (i >= codes.length || i >= objectives.length) {
